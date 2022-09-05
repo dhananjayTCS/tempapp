@@ -33,16 +33,24 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _playSound() async {
-    // AudioCache _bgmCache = AudioCache(fixedPlayer: AudioPlayer());
-    // _bgmCache.play("sound.mp3", volume: 10, isNotification: false);
-    // setState(() {
-    //   _counter++;
-    // });
-    AssetsAudioPlayer.newPlayer().open(
-      Audio("assets/sound.mp3"),
-      autoStart: true,
-      respectSilentMode: false,
+    AudioCache _bgmCache =
+        AudioCache(fixedPlayer: new AudioPlayer(), respectSilence: false);
+    _bgmCache.play(
+      'sound.mp3',
+      volume: 1,
+      isNotification: false,
     );
+    setState(() {
+      _counter++;
+    });
+
+    // AssetsAudioPlayer.newPlayer()
+    // .open(
+    //   Audio("assets/sound.mp3"),
+    //   autoStart: true,
+    //   respectSilentMode: false,
+    //   volume: 1,
+    // );
   }
 
   @override
