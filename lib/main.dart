@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_dnd/flutter_dnd.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,43 +30,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  static const platform = MethodChannel('samples.flutter.dev/battery');
 
-  void _incrementCounter() async {
-    _getBatteryLevel();
-    bool permissionAccepted =
-        await FlutterDnd.isNotificationPolicyAccessGranted ?? false;
-    if (permissionAccepted) {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL)
-          .whenComplete(() => {
-                AssetsAudioPlayer.newPlayer().open(
-                  Audio("assets/sound.mp3"),
-                  autoStart: true,
-                )
-              })
-          .whenComplete(() => restoreDND());
-    } else {
-      FlutterDnd.gotoPolicySettings();
-    }
-  }
-
-  void restoreDND() {
-    FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_PRIORITY);
-  }
-
-  String _batteryLevel = 'Unknown battery level.';
-
-  Future<void> _getBatteryLevel() async {
-    String batteryLevel;
-    try {
-      final int result = await platform.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level at $result % .';
-    } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
-    }
-
+  void _playSound() async {
+    AudioCache _bgmCache = AudioCache(fixedPlayer: AudioPlayer());
+    _bgmCache.play("sound.mp3", volume: 10, isNotification: false);
     setState(() {
-      _batteryLevel = batteryLevel;
+      _counter++;
     });
   }
 
@@ -89,17 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            Text(
-              'battery_level: $_batteryLevel',
-            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _playSound,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
