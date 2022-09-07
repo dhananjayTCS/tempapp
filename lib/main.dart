@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:volume_control/volume_control.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,6 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _playSound() async {
+    double _currVolume = await VolumeControl.volume;
+    VolumeControl.setVolume(1);
     AudioCache _bgmCache =
         AudioCache(fixedPlayer: new AudioPlayer(), respectSilence: false);
     _bgmCache.play(
