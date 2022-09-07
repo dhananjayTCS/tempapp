@@ -38,11 +38,17 @@ class _MyHomePageState extends State<MyHomePage> {
     VolumeControl.setVolume(1);
     AudioCache _bgmCache =
         AudioCache(fixedPlayer: new AudioPlayer(), respectSilence: false);
-    _bgmCache.play(
-      'sound.mp3',
-      volume: 1,
-      isNotification: false,
-    );
+    _bgmCache
+        .play(
+          'sound.mp3',
+          volume: 1,
+          isNotification: false,
+        )
+        .whenComplete(() => {
+              Future.delayed(const Duration(seconds: 10), () {
+                VolumeControl.setVolume(_currVolume);
+              })
+            });
     setState(() {
       _counter++;
     });
