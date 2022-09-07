@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:volume_control/volume_control.dart';
 
 void main() {
@@ -41,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _bgmCache
         .play(
           'sound.mp3',
-          volume: 1,
           isNotification: false,
         )
         .whenComplete(() => {
@@ -52,14 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
-
-    // AssetsAudioPlayer.newPlayer()
-    // .open(
-    //   Audio("assets/sound.mp3"),
-    //   autoStart: true,
-    //   respectSilentMode: false,
-    //   volume: 1,
-    // );
   }
 
   @override
